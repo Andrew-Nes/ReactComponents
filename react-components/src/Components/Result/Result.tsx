@@ -1,7 +1,15 @@
 import { Component, ReactNode } from 'react';
 
-export default class Result extends Component {
+interface searchResponseState {
+  searchResponse: Object[];
+}
+export default class Result extends Component<searchResponseState> {
   render(): ReactNode {
-    return <div className="result-field"></div>;
+    if (this.props.searchResponse.length === 0)
+      return <div className="result-field">No results</div>;
+    const articles = this.props.searchResponse.map((el, index) => {
+      return <p key={index}>{JSON.stringify(el)}</p>;
+    });
+    return <div className="result-field">{articles}</div>;
   }
 }

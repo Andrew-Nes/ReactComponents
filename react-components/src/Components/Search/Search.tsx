@@ -1,8 +1,13 @@
 import { ChangeEvent, Component, ReactNode } from 'react';
 
-export default class Search extends Component {
+interface SearchProps {
+  setSearchResponse: (response: Object[]) => void;
+}
+export default class Search extends Component<SearchProps> {
   searchWord: string = window.localStorage.getItem('searchWord') || '';
   state = { word: this.searchWord, results: [] };
+
+  setSearchResponse = this.props.setSearchResponse;
 
   onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     this.setState({ word: event.target.value });
@@ -14,7 +19,7 @@ export default class Search extends Component {
       `https://swapi.dev/api/people/?search=${searchWord}&page=1`
     );
     responce.json().then((data) => {
-      this.setState({ results: data.results });
+      this.setSearchResponse(data.results);
     });
   };
 
