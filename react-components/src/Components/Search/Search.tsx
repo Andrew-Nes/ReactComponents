@@ -15,30 +15,40 @@ export default class Search extends Component<SearchProps> {
   };
 
   getData = async (searchWord: string) => {
-    const responce = await fetch(
-      `https://swapi.dev/api/people/?search=${searchWord}&page=1`
-    );
-    responce.json().then((data) => {
-      this.setSearchResponse(data.results);
-    });
+    if (searchWord.length === 0) {
+      const responce = await fetch(`https://swapi.dev/api/people/`);
+      responce.json().then((data) => {
+        this.setSearchResponse(data.results);
+      });
+    } else {
+      const responce = await fetch(
+        `https://swapi.dev/api/people/?search=${searchWord}&page=1`
+      );
+      responce.json().then((data) => {
+        this.setSearchResponse(data.results);
+      });
+    }
   };
 
   render(): ReactNode {
     return (
-      <div className="search-field">
-        <input
-          type="text"
-          className="search-input"
-          value={this.state.word}
-          onChange={this.onInputChange}
-        />
-        <button
-          className="search-button"
-          onClick={() => this.getData(this.state.word)}
-        >
-          Search
-        </button>
-      </div>
+      <>
+        <h2>It searches over Star Wars charracters</h2>
+        <div className="search-field">
+          <input
+            type="text"
+            className="search-input"
+            value={this.state.word}
+            onChange={this.onInputChange}
+          />
+          <button
+            className="search-button"
+            onClick={() => this.getData(this.state.word)}
+          >
+            Search
+          </button>
+        </div>
+      </>
     );
   }
 }

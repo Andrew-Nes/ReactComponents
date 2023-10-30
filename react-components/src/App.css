@@ -4,3 +4,9 @@
   padding: 2rem;
   text-align: center;
 }
+
+input {
+  height: 2em;
+  width: 300px;
+  font-size: 1.3em;
+}
