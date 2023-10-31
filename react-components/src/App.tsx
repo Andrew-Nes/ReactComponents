@@ -10,7 +10,7 @@ export default class App extends Component {
     searchResponse: [],
   };
 
-  public setSearchResponse = (response: Object[]) => {
+  public setSearchResponse = (response: object[]) => {
     this.setState({ searchResponse: response });
   };
 

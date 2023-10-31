@@ -1,7 +1,7 @@
 import { ChangeEvent, Component, ReactNode } from 'react';
 
 interface SearchProps {
-  setSearchResponse: (response: Object[]) => void;
+  setSearchResponse: (response: object[]) => void;
 }
 export default class Search extends Component<SearchProps> {
   searchWord: string = window.localStorage.getItem('searchWord') || '';
