@@ -8,7 +8,9 @@ export default class ErrorGenerator extends Component {
   };
 
   render(): ReactNode {
-    if (this.state.isError) throw new Error('Generated Error');
+    if (this.state.isError) {
+      throw new Error('Generated Error');
+    }
     return (
       <button className="error-generator" onClick={this.generateError}>
         Generate Error
