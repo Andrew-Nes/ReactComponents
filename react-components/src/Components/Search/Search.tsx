@@ -5,7 +5,7 @@ interface SearchProps {
 }
 export default class Search extends Component<SearchProps> {
   searchWord: string = window.localStorage.getItem('searchWord') || '';
-  state = { word: this.searchWord, results: [] };
+  state = { word: this.searchWord, results: [], loading: false };
 
   setSearchResponse = this.props.setSearchResponse;
 
@@ -15,10 +15,12 @@ export default class Search extends Component<SearchProps> {
   };
 
   getData = async (searchWord: string) => {
+    this.setState({ loading: true });
     if (searchWord.length === 0) {
       const responce = await fetch(`https://swapi.dev/api/people/`);
       responce.json().then((data) => {
         this.setSearchResponse(data.results);
+        this.setState({ loading: false });
       });
     } else {
       const responce = await fetch(
@@ -26,11 +28,28 @@ export default class Search extends Component<SearchProps> {
       );
       responce.json().then((data) => {
         this.setSearchResponse(data.results);
+        this.setState({ loading: false });
       });
     }
   };
 
   render(): ReactNode {
+    const loading = this.state.loading;
+
+    const renderButton = () => {
+      if (loading) {
+        return <button disabled>Loading...</button>;
+      } else {
+        return (
+          <button
+            className="search-button"
+            onClick={() => this.getData(this.state.word)}
+          >
+            Search
+          </button>
+        );
+      }
+    };
     return (
       <>
         <h2>It searches over Star Wars charracters</h2>
@@ -41,12 +60,7 @@ export default class Search extends Component<SearchProps> {
             value={this.state.word}
             onChange={this.onInputChange}
           />
-          <button
-            className="search-button"
-            onClick={() => this.getData(this.state.word)}
-          >
-            Search
-          </button>
+          {renderButton()}
         </div>
       </>
     );
