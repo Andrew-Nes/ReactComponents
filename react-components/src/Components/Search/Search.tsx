@@ -1,4 +1,5 @@
 import { ChangeEvent, Component, ReactNode } from 'react';
+import { initialCall, searchCall } from '../../apiCalls/apiCalls';
 
 interface SearchProps {
   setSearchResponse: (response: object[]) => void;
@@ -17,15 +18,13 @@ export default class Search extends Component<SearchProps> {
   getData = async (searchWord: string) => {
     this.setState({ loading: true });
     if (searchWord.length === 0) {
-      const responce = await fetch(`https://swapi.dev/api/people/`);
+      const responce = await initialCall();
       responce.json().then((data) => {
         this.setSearchResponse(data.results);
         this.setState({ loading: false });
       });
     } else {
-      const responce = await fetch(
-        `https://swapi.dev/api/people/?search=${searchWord}&page=1`
-      );
+      const responce = await searchCall(searchWord, 1);
       responce.json().then((data) => {
         this.setSearchResponse(data.results);
         this.setState({ loading: false });
