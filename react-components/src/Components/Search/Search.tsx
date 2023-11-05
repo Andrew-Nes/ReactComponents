@@ -1,67 +1,62 @@
-import { ChangeEvent, Component, ReactNode } from 'react';
-import { initialCall, searchCall } from '../../apiCalls/apiCalls';
+import { ChangeEvent, useState } from 'react';
+import { initialCall, searchCall } from '../../services/apiCalls/apiCalls';
+import { searchResponseState } from '../../types/types';
 
 interface SearchProps {
-  setSearchResponse: (response: object[]) => void;
+  setSearchResponse: (response: searchResponseState[]) => void;
 }
-export default class Search extends Component<SearchProps> {
-  searchWord: string = window.localStorage.getItem('searchWord') || '';
-  state = { word: this.searchWord, results: [], loading: false };
+const Search: React.FC<SearchProps> = (props) => {
+  const searchWord: string = window.localStorage.getItem('searchWord') || '';
+  const [word, setWord] = useState<string>(searchWord);
+  const [loading, setLoading] = useState(false);
 
-  setSearchResponse = this.props.setSearchResponse;
-
-  onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ word: event.target.value });
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setWord(event.target.value);
     window.localStorage.setItem('searchWord', event.target.value);
   };
 
-  getData = async (searchWord: string) => {
-    this.setState({ loading: true });
+  const getData = async (searchWord: string) => {
+    setLoading(true);
     if (searchWord.length === 0) {
       const responce = await initialCall();
       responce.json().then((data) => {
-        this.setSearchResponse(data.results);
-        this.setState({ loading: false });
+        props.setSearchResponse(data.results);
+        setLoading(false);
       });
     } else {
       const responce = await searchCall(searchWord, 1);
       responce.json().then((data) => {
-        this.setSearchResponse(data.results);
-        this.setState({ loading: false });
+        props.setSearchResponse(data.results);
+        setLoading(false);
       });
     }
   };
 
-  render(): ReactNode {
-    const loading = this.state.loading;
+  const renderButton = () => {
+    if (loading) {
+      return <button disabled>Loading...</button>;
+    } else {
+      return (
+        <button className="search-button" onClick={() => getData(word)}>
+          Search
+        </button>
+      );
+    }
+  };
+  return (
+    <>
+      <h2>It searches over Star Wars charracters</h2>
+      <div className="search-field">
+        <input
+          type="text"
+          className="search-input"
+          value={word}
+          onChange={onInputChange}
+        />
+        {renderButton()}
+      </div>
+    </>
+  );
+};
 
-    const renderButton = () => {
-      if (loading) {
-        return <button disabled>Loading...</button>;
-      } else {
-        return (
-          <button
-            className="search-button"
-            onClick={() => this.getData(this.state.word)}
-          >
-            Search
-          </button>
-        );
-      }
-    };
-    return (
-      <>
-        <h2>It searches over Star Wars charracters</h2>
-        <div className="search-field">
-          <input
-            type="text"
-            className="search-input"
-            value={this.state.word}
-            onChange={this.onInputChange}
-          />
-          {renderButton()}
-        </div>
-      </>
-    );
-  }
-}
+export default Search;

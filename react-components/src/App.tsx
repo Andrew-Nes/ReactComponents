@@ -1,28 +1,29 @@
 import './App.css';
-import { Component, ReactNode } from 'react';
+import { useState } from 'react';
 import Search from './Components/Search/Search';
 import ErrorBoundary from './Components/ErrorBoundary/ErrorBoundary';
 import ErrorGenerator from './Components/ErrorBoundary/ErrorGenerator';
 import Result from './Components/Result/Result';
+import { searchResponseState } from './types/types';
 
-export default class App extends Component {
-  state = {
-    searchResponse: [],
+const App: React.FC = () => {
+  const [searchResponse, setSearchResponse] = useState<
+    searchResponseState[] | []
+  >([]);
+
+  const handleSetSearchResponse = (response: searchResponseState[]) => {
+    setSearchResponse(response);
   };
 
-  public setSearchResponse = (response: object[]) => {
-    this.setState({ searchResponse: response });
-  };
+  return (
+    <div className="application">
+      <ErrorBoundary>
+        <ErrorGenerator></ErrorGenerator>
+        <Search setSearchResponse={handleSetSearchResponse}></Search>
+        <Result searchResponse={searchResponse}></Result>
+      </ErrorBoundary>
+    </div>
+  );
+};
 
-  render(): ReactNode {
-    return (
-      <div className="application">
-        <ErrorBoundary>
-          <ErrorGenerator></ErrorGenerator>
-          <Search setSearchResponse={this.setSearchResponse}></Search>
-          <Result searchResponse={this.state.searchResponse}></Result>
-        </ErrorBoundary>
-      </div>
-    );
-  }
-}
+export default App;
