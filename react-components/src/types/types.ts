@@ -1,12 +1,7 @@
 export interface searchResponseState {
-  searchResponse: {
-    name: string;
-    height: string;
-    mass: string;
-    hair_color: string;
-    skin_color: string;
-    eye_color: string;
-    birth_year: string;
-    gender: string;
-  };
+  title: string;
+  genres: string[];
+  year: string;
+  rating: string;
+  medium_cover_image: string;
 }

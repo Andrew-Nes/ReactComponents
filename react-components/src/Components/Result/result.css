@@ -1,0 +1,13 @@
+.result-section{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+  width: 100%;
+  background-color: azure;
+
+}
+
+.result-card{
+  max-width: 220px;
+}

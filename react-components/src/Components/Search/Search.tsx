@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from 'react';
-import { initialCall, searchCall } from '../../services/apiCalls/apiCalls';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { searchCall } from '../../services/apiCalls/apiCalls';
 import { searchResponseState } from '../../types/types';
 
 interface SearchProps {
@@ -17,21 +17,15 @@ const Search: React.FC<SearchProps> = (props) => {
 
   const getData = async (searchWord: string) => {
     setLoading(true);
-    if (searchWord.length === 0) {
-      const responce = await initialCall();
-      responce.json().then((data) => {
-        props.setSearchResponse(data.results);
-        setLoading(false);
-      });
-    } else {
-      const responce = await searchCall(searchWord, 1);
-      responce.json().then((data) => {
-        props.setSearchResponse(data.results);
-        setLoading(false);
-      });
-    }
+    const responce = await searchCall(searchWord, 1, 20);
+    responce.json().then((data) => {
+      props.setSearchResponse(data.data.movies);
+      setLoading(false);
+    });
   };
-
+  useEffect(() => {
+    getData(word);
+  }, []);
   const renderButton = () => {
     if (loading) {
       return <button disabled>Loading...</button>;
@@ -44,8 +38,8 @@ const Search: React.FC<SearchProps> = (props) => {
     }
   };
   return (
-    <>
-      <h2>It searches over Star Wars charracters</h2>
+    <section className="search-section">
+      <h2>Type in a film title</h2>
       <div className="search-field">
         <input
           type="text"
@@ -55,7 +49,7 @@ const Search: React.FC<SearchProps> = (props) => {
         />
         {renderButton()}
       </div>
-    </>
+    </section>
   );
 };
 

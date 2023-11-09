@@ -1,22 +1,29 @@
 import { searchResponseState } from '../../types/types';
+import './result.css';
 
 const Result: React.FC<{ searchResponse: searchResponseState[] }> = (props) => {
-  if (props.searchResponse.length === 0) {
-    return <div className="result-field">No results</div>;
-  }
-  return props.searchResponse.map((el, index) => {
-    return (
-      <p key={index}>
-        Name: {el.searchResponse.name} <br></br>
-        Height: {el.searchResponse.height} <br></br>
-        Weight: {el.searchResponse.mass} <br></br>
-        Hair: {el.searchResponse.hair_color} <br></br>
-        Skin: {el.searchResponse.skin_color} <br></br>
-        Eyes: {el.searchResponse.eye_color} <br></br>
-        Born: {el.searchResponse.birth_year} <br></br>
-      </p>
-    );
-  });
+  return (
+    <section className="result-section">
+      {props.searchResponse.length === 0 ? (
+        <div className="result-field">No results</div>
+      ) : (
+        props.searchResponse.map((el, index) => {
+          return (
+            <div key={index} className="result-card">
+              <img
+                className="result-card__img"
+                src={el.medium_cover_image}
+              ></img>
+              <p className="result-card__info">Title: {el.title}</p>
+              <p className="result-card__info">Genre: {el.genres.join(', ')}</p>
+              <p className="result-card__info">Year: {el.year}</p>
+              <p className="result-card__info">Rating: {el.rating}</p>
+            </div>
+          );
+        })
+      )}
+    </section>
+  );
 };
 
 export default Result;
