@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { searchCall } from '../../services/apiCalls/apiCalls';
 import { searchResponseState } from '../../types/types';
 import Pagination from '../Pagination/Pagination';
+import ItemsNumber from '../ItemsNumber/ItemsNumber';
 
 interface SearchProps {
   setSearchResponse: (response: searchResponseState[]) => void;
@@ -12,6 +13,7 @@ const Search: React.FC<SearchProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [maxPages, setMaxPages] = useState(1);
+  const [itemsNumber, setItemsNumber] = useState(20);
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setWord(event.target.value);
     window.localStorage.setItem('searchWord', event.target.value);
@@ -19,7 +21,7 @@ const Search: React.FC<SearchProps> = (props) => {
 
   const getData = async (searchWord: string) => {
     setLoading(true);
-    const responce = await searchCall(searchWord, page, 20);
+    const responce = await searchCall(searchWord, page, itemsNumber);
     responce.json().then((data) => {
       props.setSearchResponse(data.data.movies);
       const countPages = () => {
@@ -32,7 +34,8 @@ const Search: React.FC<SearchProps> = (props) => {
   };
   useEffect(() => {
     getData(word);
-  }, [page, setPage]);
+  }, [page, setPage, itemsNumber, setItemsNumber]);
+
   const renderButton = () => {
     if (loading) {
       return <button disabled>Loading...</button>;
@@ -55,7 +58,13 @@ const Search: React.FC<SearchProps> = (props) => {
           onChange={onInputChange}
         />
         {renderButton()}
-        <Pagination setPage={setPage} maxPages={maxPages}></Pagination>
+        <div className="search-options">
+          <ItemsNumber
+            itemsNumber={itemsNumber}
+            setItemsNumber={setItemsNumber}
+          />
+          <Pagination setPage={setPage} maxPages={maxPages}></Pagination>
+        </div>
       </div>
     </section>
   );
