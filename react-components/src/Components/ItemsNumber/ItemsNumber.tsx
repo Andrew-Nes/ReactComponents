@@ -4,10 +4,11 @@ import './itemsNumber.css';
 interface ItemsNumberProps {
   itemsNumber: number;
   setItemsNumber: (number: number) => void;
+  setPage: (page: number) => void;
 }
 
 const ItemsNumber: FC<ItemsNumberProps> = (props: ItemsNumberProps) => {
-  const { itemsNumber, setItemsNumber } = props;
+  const { itemsNumber, setItemsNumber, setPage } = props;
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = () => {
       const number = Number(event.target.value);
@@ -20,6 +21,7 @@ const ItemsNumber: FC<ItemsNumberProps> = (props: ItemsNumberProps) => {
       return number;
     };
     setItemsNumber(value());
+    setPage(1);
   };
   return (
     <div className="items-number">

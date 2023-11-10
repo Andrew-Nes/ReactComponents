@@ -1,14 +1,15 @@
 import './pagination.css';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 interface PaginationProps {
+  page: number;
   setPage: (page: number) => void;
   maxPages: number;
 }
 
 const Pagination: FC<PaginationProps> = (props: PaginationProps) => {
-  const [pageNumber, setPageNumber] = useState(1);
-  const { setPage, maxPages } = props;
+  const { page, setPage, maxPages } = props;
+  const [pageNumber, setPageNumber] = useState(page);
   const nextPage = () => {
     setPageNumber(pageNumber + 1);
     setPage(pageNumber + 1);
@@ -17,6 +18,9 @@ const Pagination: FC<PaginationProps> = (props: PaginationProps) => {
     setPageNumber(pageNumber - 1);
     setPage(pageNumber - 1);
   };
+  useEffect(() => {
+    setPageNumber(page);
+  }, [page]);
   return (
     <div className="pagination">
       <button

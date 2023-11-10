@@ -62,8 +62,13 @@ const Search: React.FC<SearchProps> = (props) => {
           <ItemsNumber
             itemsNumber={itemsNumber}
             setItemsNumber={setItemsNumber}
+            setPage={setPage}
           />
-          <Pagination setPage={setPage} maxPages={maxPages}></Pagination>
+          <Pagination
+            setPage={setPage}
+            maxPages={maxPages}
+            page={page}
+          ></Pagination>
         </div>
       </div>
     </section>
