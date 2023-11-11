@@ -1,21 +1,25 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { searchCall } from '../../services/apiCalls/apiCalls';
 import { searchResponseState } from '../../types/types';
 import Pagination from '../Pagination/Pagination';
 import ItemsNumber from '../ItemsNumber/ItemsNumber';
+import { SearchContext } from '../../App';
 
 interface SearchProps {
   setSearchResponse: (response: searchResponseState[]) => void;
+  setWord: (word: string) => void;
 }
+
 const Search: React.FC<SearchProps> = (props) => {
-  const searchWord: string = window.localStorage.getItem('searchWord') || '';
-  const [word, setWord] = useState<string>(searchWord);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [maxPages, setMaxPages] = useState(1);
   const [itemsNumber, setItemsNumber] = useState(20);
+
+  const context = useContext(SearchContext);
+
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setWord(event.target.value);
+    props.setWord(event.target.value);
     window.localStorage.setItem('searchWord', event.target.value);
   };
 
@@ -33,7 +37,7 @@ const Search: React.FC<SearchProps> = (props) => {
     });
   };
   useEffect(() => {
-    getData(word);
+    getData(context.search);
   }, [page, setPage, itemsNumber, setItemsNumber]);
 
   const renderButton = () => {
@@ -41,7 +45,10 @@ const Search: React.FC<SearchProps> = (props) => {
       return <button disabled>Loading...</button>;
     } else {
       return (
-        <button className="search-button" onClick={() => getData(word)}>
+        <button
+          className="search-button"
+          onClick={() => getData(context.search)}
+        >
           Search
         </button>
       );
@@ -54,7 +61,7 @@ const Search: React.FC<SearchProps> = (props) => {
         <input
           type="text"
           className="search-input"
-          value={word}
+          value={context.search}
           onChange={onInputChange}
         />
         {renderButton()}

@@ -1,14 +1,16 @@
-import { searchResponseState } from '../../types/types';
+import { useContext } from 'react';
+import { SearchContext } from '../../App';
 import ResultCard from '../ResultCard/ResultCard';
 import './result.css';
 
-const Result: React.FC<{ searchResponse: searchResponseState[] }> = (props) => {
+const Result: React.FC = () => {
+  const searchResponse = useContext(SearchContext);
   return (
     <section className="result-section">
-      {props.searchResponse.length === 0 ? (
+      {searchResponse.response.length === 0 ? (
         <div className="result-field">No results</div>
       ) : (
-        props.searchResponse.map((el, index) => {
+        searchResponse.response.map((el, index) => {
           return <ResultCard searchResponse={el} key={index} />;
         })
       )}

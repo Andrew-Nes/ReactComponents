@@ -5,3 +5,8 @@ export interface searchResponseState {
   rating: string;
   medium_cover_image: string;
 }
+
+export interface SearchContextType {
+  search: string;
+  response: searchResponseState[];
+}
