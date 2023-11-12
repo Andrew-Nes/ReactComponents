@@ -1,12 +1,18 @@
 import { searchResponseState } from '../../types/types';
 
 interface ResultCardProps {
+  setDetailed: (index: number) => void;
   searchResponse: searchResponseState;
   key: number;
+  index: number;
 }
 const ResultCard: React.FC<ResultCardProps> = (props) => {
+  const handleClick = () => {
+    props.setDetailed(props.index);
+  };
+
   return (
-    <div key={props.key} className="result-card">
+    <div key={props.index} className="result-card" onClick={handleClick}>
       <img
         className="result-card__img"
         src={props.searchResponse.medium_cover_image}

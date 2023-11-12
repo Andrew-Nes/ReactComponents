@@ -10,17 +10,21 @@ interface PaginationProps {
 const Pagination: FC<PaginationProps> = (props: PaginationProps) => {
   const { page, setPage, maxPages } = props;
   const [pageNumber, setPageNumber] = useState(page);
+
   const nextPage = () => {
     setPageNumber(pageNumber + 1);
     setPage(pageNumber + 1);
   };
+
   const prevPage = () => {
     setPageNumber(pageNumber - 1);
     setPage(pageNumber - 1);
   };
+
   useEffect(() => {
     setPageNumber(page);
   }, [page]);
+
   return (
     <div className="pagination">
       <button

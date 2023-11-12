@@ -16,7 +16,7 @@ const Search: React.FC<SearchProps> = (props) => {
   const [maxPages, setMaxPages] = useState(1);
   const [itemsNumber, setItemsNumber] = useState(20);
 
-  const context = useContext(SearchContext);
+  const { search } = useContext(SearchContext);
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     props.setWord(event.target.value);
@@ -37,7 +37,7 @@ const Search: React.FC<SearchProps> = (props) => {
     });
   };
   useEffect(() => {
-    getData(context.search);
+    getData(search);
   }, [page, setPage, itemsNumber, setItemsNumber]);
 
   const renderButton = () => {
@@ -45,10 +45,7 @@ const Search: React.FC<SearchProps> = (props) => {
       return <button disabled>Loading...</button>;
     } else {
       return (
-        <button
-          className="search-button"
-          onClick={() => getData(context.search)}
-        >
+        <button className="search-button" onClick={() => getData(search)}>
           Search
         </button>
       );
@@ -61,7 +58,7 @@ const Search: React.FC<SearchProps> = (props) => {
         <input
           type="text"
           className="search-input"
-          value={context.search}
+          value={search}
           onChange={onInputChange}
         />
         {renderButton()}

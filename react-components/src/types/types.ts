@@ -4,6 +4,8 @@ export interface searchResponseState {
   year: string;
   rating: string;
   medium_cover_image: string;
+  summary: string;
+  large_cover_image: string;
 }
 
 export interface SearchContextType {
