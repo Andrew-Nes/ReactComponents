@@ -1,30 +1,31 @@
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { searchCall } from '../../services/apiCalls/apiCalls';
 import { searchResponseState } from '../../types/types';
 import Pagination from '../Pagination/Pagination';
 import ItemsNumber from '../ItemsNumber/ItemsNumber';
-import { SearchContext } from '../../App';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setItemsNumber } from '../../state/itemsNumber/itemsNumberSlice';
 import { RootState } from '../../state/store';
+import { setSearchTerm } from '../../state/searchTerm/searchTermslice';
 
 interface SearchProps {
   setSearchResponse: (response: searchResponseState[]) => void;
-  setWord: (word: string) => void;
 }
 
 const Search: React.FC<SearchProps> = (props) => {
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [maxPages, setMaxPages] = useState(1);
+  const dispatch = useDispatch();
   const itemsNumber = useSelector(
     (state: RootState) => state.itemsNumber.value
   );
-  const { search } = useContext(SearchContext);
+  const searchTerm = useSelector((state: RootState) => state.searchTerm.value);
+
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [maxPages, setMaxPages] = useState(1);
+  const [searchWord, setSearchWord] = useState(searchTerm);
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    props.setWord(event.target.value);
-    window.localStorage.setItem('searchWord', event.target.value);
+    setSearchWord(event.target.value);
   };
 
   const getData = async (searchWord: string) => {
@@ -40,8 +41,15 @@ const Search: React.FC<SearchProps> = (props) => {
       setLoading(false);
     });
   };
+
+  const onButtonClick = () => {
+    dispatch(setSearchTerm(searchWord));
+    window.localStorage.setItem('searchWord', searchWord);
+    getData(searchWord);
+  };
+
   useEffect(() => {
-    getData(search);
+    getData(searchWord);
   }, [page, setPage, itemsNumber, setItemsNumber]);
 
   const renderButton = () => {
@@ -49,7 +57,7 @@ const Search: React.FC<SearchProps> = (props) => {
       return <button disabled>Loading...</button>;
     } else {
       return (
-        <button className="search-button" onClick={() => getData(search)}>
+        <button className="search-button" onClick={onButtonClick}>
           Search
         </button>
       );
@@ -62,7 +70,7 @@ const Search: React.FC<SearchProps> = (props) => {
         <input
           type="text"
           className="search-input"
-          value={search}
+          value={searchWord}
           onChange={onInputChange}
         />
         {renderButton()}

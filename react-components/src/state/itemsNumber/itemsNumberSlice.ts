@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface ItemsNumberState {
   value: number;
@@ -12,7 +12,10 @@ const itemsNumberSlice = createSlice({
   name: 'itemsNumber',
   initialState,
   reducers: {
-    setItemsNumber: (state: ItemsNumberState, action) => {
+    setItemsNumber: (
+      state: ItemsNumberState,
+      action: PayloadAction<number>
+    ) => {
       state.value = action.payload;
     },
   },

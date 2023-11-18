@@ -10,6 +10,5 @@ export interface searchResponseState {
 }
 
 export interface SearchContextType {
-  search: string;
   response: searchResponseState[];
 }
