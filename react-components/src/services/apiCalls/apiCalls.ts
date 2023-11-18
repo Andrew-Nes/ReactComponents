@@ -1,11 +1,11 @@
-export const initialCall = () => {
-  const resp = fetch(`https://swapi.dev/api/people/`);
+export const searchCall = (searchWord: string, page: number, limit: number) => {
+  const resp = fetch(
+    `https://yts.mx/api/v2/list_movies.json?query_term=${searchWord}&limit=${limit}&page=${page}`
+  );
   return resp;
 };
 
-export const searchCall = (searchWord: string, page: number) => {
-  const resp = fetch(
-    `https://swapi.dev/api/people/?search=${searchWord}&page=${page}`
-  );
+export const detailsCall = (id: number) => {
+  const resp = fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}`);
   return resp;
 };

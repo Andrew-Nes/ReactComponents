@@ -1,0 +1,27 @@
+.result-card_detailed {
+  position: relative;
+  max-width: 600px;
+}
+
+.result-card__close {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  right: 5px;
+  top: 5px;
+  background-color: ghostwhite;
+  opacity: 0.75;
+  color: black;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 900;
+}
+
+.result-card__close:hover,
+.result-card:hover {
+  cursor: pointer;
+}

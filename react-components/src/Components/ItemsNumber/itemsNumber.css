@@ -1,0 +1,10 @@
+.items-number {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.items-number__input {
+  width: 50px;
+  border: none;
+  text-align: center;
+}

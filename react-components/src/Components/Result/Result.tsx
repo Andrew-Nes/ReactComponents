@@ -1,22 +1,44 @@
-import { searchResponseState } from '../../types/types';
+import { useContext, useState } from 'react';
+import { SearchContext } from '../../App';
+import ResultCard from '../ResultCard/ResultCard';
+import './result.css';
+import ResultCardDetailed from '../ResultCard/ResultCardDetailed';
 
-const Result: React.FC<{ searchResponse: searchResponseState[] }> = (props) => {
-  if (props.searchResponse.length === 0) {
-    return <div className="result-field">No results</div>;
-  }
-  return props.searchResponse.map((el, index) => {
-    return (
-      <p key={index}>
-        Name: {el.searchResponse.name} <br></br>
-        Height: {el.searchResponse.height} <br></br>
-        Weight: {el.searchResponse.mass} <br></br>
-        Hair: {el.searchResponse.hair_color} <br></br>
-        Skin: {el.searchResponse.skin_color} <br></br>
-        Eyes: {el.searchResponse.eye_color} <br></br>
-        Born: {el.searchResponse.birth_year} <br></br>
-      </p>
-    );
-  });
+const Result: React.FC = () => {
+  const { response } = useContext(SearchContext);
+  const [detailed, setDetailed] = useState(-1);
+
+  const handleSetDetailed = (index: number) => {
+    setDetailed(index);
+  };
+
+  return (
+    <section className="result-section">
+      <div className="result-field">
+        {response.length === 0 ? (
+          <div className="result-field_empty">No results</div>
+        ) : (
+          response.map((el, index) => {
+            return (
+              <ResultCard
+                searchResponse={el}
+                key={index}
+                setDetailed={handleSetDetailed}
+              />
+            );
+          })
+        )}
+      </div>
+      {detailed < 0 ? (
+        <div></div>
+      ) : (
+        <ResultCardDetailed
+          searchResponse={response[detailed]}
+          setDetailed={handleSetDetailed}
+        />
+      )}
+    </section>
+  );
 };
 
 export default Result;

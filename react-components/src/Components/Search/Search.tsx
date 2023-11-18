@@ -1,61 +1,81 @@
-import { ChangeEvent, useState } from 'react';
-import { initialCall, searchCall } from '../../services/apiCalls/apiCalls';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { searchCall } from '../../services/apiCalls/apiCalls';
 import { searchResponseState } from '../../types/types';
+import Pagination from '../Pagination/Pagination';
+import ItemsNumber from '../ItemsNumber/ItemsNumber';
+import { SearchContext } from '../../App';
 
 interface SearchProps {
   setSearchResponse: (response: searchResponseState[]) => void;
+  setWord: (word: string) => void;
 }
+
 const Search: React.FC<SearchProps> = (props) => {
-  const searchWord: string = window.localStorage.getItem('searchWord') || '';
-  const [word, setWord] = useState<string>(searchWord);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [maxPages, setMaxPages] = useState(1);
+  const [itemsNumber, setItemsNumber] = useState(20);
+
+  const { search } = useContext(SearchContext);
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setWord(event.target.value);
+    props.setWord(event.target.value);
     window.localStorage.setItem('searchWord', event.target.value);
   };
 
   const getData = async (searchWord: string) => {
     setLoading(true);
-    if (searchWord.length === 0) {
-      const responce = await initialCall();
-      responce.json().then((data) => {
-        props.setSearchResponse(data.results);
-        setLoading(false);
-      });
-    } else {
-      const responce = await searchCall(searchWord, 1);
-      responce.json().then((data) => {
-        props.setSearchResponse(data.results);
-        setLoading(false);
-      });
-    }
+    const responce = await searchCall(searchWord, page, itemsNumber);
+    responce.json().then((data) => {
+      props.setSearchResponse(data.data.movies);
+      const countPages = () => {
+        return Math.ceil(data.data.movie_count / data.data.limit);
+      };
+
+      setMaxPages(countPages);
+      setLoading(false);
+    });
   };
+  useEffect(() => {
+    getData(search);
+  }, [page, setPage, itemsNumber, setItemsNumber]);
 
   const renderButton = () => {
     if (loading) {
       return <button disabled>Loading...</button>;
     } else {
       return (
-        <button className="search-button" onClick={() => getData(word)}>
+        <button className="search-button" onClick={() => getData(search)}>
           Search
         </button>
       );
     }
   };
   return (
-    <>
-      <h2>It searches over Star Wars charracters</h2>
+    <section className="search-section">
+      <h2>Type in a film title</h2>
       <div className="search-field">
         <input
           type="text"
           className="search-input"
-          value={word}
+          value={search}
           onChange={onInputChange}
         />
         {renderButton()}
+        <div className="search-options">
+          <ItemsNumber
+            itemsNumber={itemsNumber}
+            setItemsNumber={setItemsNumber}
+            setPage={setPage}
+          />
+          <Pagination
+            setPage={setPage}
+            maxPages={maxPages}
+            page={page}
+          ></Pagination>
+        </div>
       </div>
-    </>
+    </section>
   );
 };
 
