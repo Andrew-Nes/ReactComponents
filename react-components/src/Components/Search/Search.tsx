@@ -4,6 +4,9 @@ import { searchResponseState } from '../../types/types';
 import Pagination from '../Pagination/Pagination';
 import ItemsNumber from '../ItemsNumber/ItemsNumber';
 import { SearchContext } from '../../App';
+import { useSelector } from 'react-redux';
+import { setItemsNumber } from '../../state/itemsNumber/itemsNumberSlice';
+import { RootState } from '../../state/store';
 
 interface SearchProps {
   setSearchResponse: (response: searchResponseState[]) => void;
@@ -14,8 +17,9 @@ const Search: React.FC<SearchProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [maxPages, setMaxPages] = useState(1);
-  const [itemsNumber, setItemsNumber] = useState(20);
-
+  const itemsNumber = useSelector(
+    (state: RootState) => state.itemsNumber.value
+  );
   const { search } = useContext(SearchContext);
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -63,11 +67,7 @@ const Search: React.FC<SearchProps> = (props) => {
         />
         {renderButton()}
         <div className="search-options">
-          <ItemsNumber
-            itemsNumber={itemsNumber}
-            setItemsNumber={setItemsNumber}
-            setPage={setPage}
-          />
+          <ItemsNumber setPage={setPage} />
           <Pagination
             setPage={setPage}
             maxPages={maxPages}

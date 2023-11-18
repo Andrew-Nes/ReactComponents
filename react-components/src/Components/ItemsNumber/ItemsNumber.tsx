@@ -1,14 +1,21 @@
 import { FC, ChangeEvent } from 'react';
 import './itemsNumber.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { setItemsNumber } from '../../state/itemsNumber/itemsNumberSlice';
+import { RootState } from '../../state/store';
 
 interface ItemsNumberProps {
-  itemsNumber: number;
-  setItemsNumber: (number: number) => void;
   setPage: (page: number) => void;
 }
 
 const ItemsNumber: FC<ItemsNumberProps> = (props: ItemsNumberProps) => {
-  const { itemsNumber, setItemsNumber, setPage } = props;
+  const dispatch = useDispatch();
+  const itemsNumber = useSelector(
+    (state: RootState) => state.itemsNumber.value
+  );
+
+  const { setPage } = props;
+
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = () => {
       const number = Number(event.target.value);
@@ -20,7 +27,7 @@ const ItemsNumber: FC<ItemsNumberProps> = (props: ItemsNumberProps) => {
       }
       return number;
     };
-    setItemsNumber(value());
+    dispatch(setItemsNumber(value()));
     setPage(1);
   };
   return (
