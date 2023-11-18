@@ -4,15 +4,14 @@ interface ResultCardProps {
   setDetailed: (index: number) => void;
   searchResponse: searchResponseState;
   key: number;
-  index: number;
 }
 const ResultCard: React.FC<ResultCardProps> = (props) => {
   const handleClick = () => {
-    props.setDetailed(props.index);
+    props.setDetailed(Number(props.searchResponse.id));
   };
 
   return (
-    <div key={props.index} className="result-card" onClick={handleClick}>
+    <div key={props.key} className="result-card" onClick={handleClick}>
       <img
         className="result-card__img"
         src={props.searchResponse.medium_cover_image}

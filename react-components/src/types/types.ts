@@ -1,4 +1,5 @@
 export interface searchResponseState {
+  id: string;
   title: string;
   genres: string[];
   year: string;

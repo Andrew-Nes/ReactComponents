@@ -23,7 +23,6 @@ const Result: React.FC = () => {
               <ResultCard
                 searchResponse={el}
                 key={index}
-                index={index}
                 setDetailed={handleSetDetailed}
               />
             );

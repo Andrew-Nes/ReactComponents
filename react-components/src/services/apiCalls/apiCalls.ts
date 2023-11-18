@@ -4,3 +4,8 @@ export const searchCall = (searchWord: string, page: number, limit: number) => {
   );
   return resp;
 };
+
+export const detailsCall = (id: number) => {
+  const resp = fetch(`https://yts.mx/api/v2/movie_details.json?movie_id=${id}`);
+  return resp;
+};
