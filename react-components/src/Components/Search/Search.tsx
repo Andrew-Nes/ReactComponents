@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setItemsNumber } from '../../state/itemsNumber/itemsNumberSlice';
 import { RootState } from '../../state/store';
 import { setSearchTerm } from '../../state/searchTerm/searchTermslice';
+import Spinner from '../Spinner/Spinner';
+import './search.css';
 
 interface SearchProps {
   setSearchResponse: (response: searchResponseState[]) => void;
@@ -54,7 +56,12 @@ const Search: React.FC<SearchProps> = (props) => {
 
   const renderButton = () => {
     if (loading) {
-      return <button disabled>Loading...</button>;
+      return (
+        <div className="search-button-container">
+          <Spinner classname={'loader_small'} />
+          <button disabled>Loading...</button>
+        </div>
+      );
     } else {
       return (
         <button className="search-button" onClick={onButtonClick}>
