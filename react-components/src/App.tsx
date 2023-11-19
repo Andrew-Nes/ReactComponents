@@ -4,38 +4,24 @@ import Search from './Components/Search/Search';
 import ErrorBoundary from './Components/ErrorBoundary/ErrorBoundary';
 import ErrorGenerator from './Components/ErrorBoundary/ErrorGenerator';
 import Result from './Components/Result/Result';
-import { SearchContextType, searchResponseState } from './types/types';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-export const SearchContext = createContext<SearchContextType>({
-  search: '',
-  response: [],
-});
+export const SearchContext = createContext<string>('');
 
 const App: React.FC = () => {
-  const [searchResponse, setSearchResponse] = useState<
-    searchResponseState[] | []
-  >([]);
-  const searchWord: string = window.localStorage.getItem('searchWord') || '';
-  const [word, setWord] = useState<string>(searchWord);
+  const [searchParameters, setSearchParameters] = useState<string>('');
 
-  const handleSetSearchResponse = (response: searchResponseState[]) => {
-    setSearchResponse(response);
-  };
-  const setSearchWord = (word: string) => {
-    setWord(word);
+  const handleSetSearchParameters = (parameters: string) => {
+    setSearchParameters(parameters);
   };
 
   return (
-    <SearchContext.Provider value={{ search: word, response: searchResponse }}>
+    <SearchContext.Provider value={searchParameters}>
       <BrowserRouter>
         <div className="application">
           <ErrorBoundary>
             <ErrorGenerator></ErrorGenerator>
-            <Search
-              setSearchResponse={handleSetSearchResponse}
-              setWord={setSearchWord}
-            ></Search>
+            <Search setSearchParameters={handleSetSearchParameters}></Search>
             <Routes>
               <Route path="/" element={<Result />} index />
               <Route path="*" element={<h1>No results</h1>} />
