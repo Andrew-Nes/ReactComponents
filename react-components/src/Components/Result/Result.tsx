@@ -1,24 +1,26 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SearchContext } from '../../App';
 import ResultCard from '../ResultCard/ResultCard';
 import './result.css';
 import ResultCardDetailed from '../ResultCard/ResultCardDetailed';
+import { useGetListQuery } from '../../services/apiCalls/apiCalls';
 
 const Result: React.FC = () => {
-  const { response } = useContext(SearchContext);
+  const params = useContext(SearchContext);
+  const { data } = useGetListQuery(params);
   const [detailed, setDetailed] = useState(-1);
 
   const handleSetDetailed = (index: number) => {
     setDetailed(index);
   };
-
+  useEffect(() => {}, []);
   return (
     <section className="result-section">
       <div className="result-field">
-        {response.length === 0 ? (
+        {!data?.movies ? (
           <div className="result-field_empty">No results</div>
         ) : (
-          response.map((el, index) => {
+          data?.movies.map((el, index) => {
             return (
               <ResultCard
                 searchResponse={el}
@@ -33,7 +35,7 @@ const Result: React.FC = () => {
         <div></div>
       ) : (
         <ResultCardDetailed
-          searchResponse={response[detailed]}
+          searchId={detailed}
           setDetailed={handleSetDetailed}
         />
       )}

@@ -1,8 +1,8 @@
-import { searchResponseState } from '../../types/types';
+import { Movie } from '../../types/types';
 
 interface ResultCardProps {
   setDetailed: (index: number) => void;
-  searchResponse: searchResponseState;
+  searchResponse: Movie;
   key: number;
 }
 const ResultCard: React.FC<ResultCardProps> = (props) => {

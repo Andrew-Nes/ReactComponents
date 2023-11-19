@@ -1,6 +1,6 @@
 .loader {
   margin: auto;
-  border: 20px solid #EAF0F6;
+  border: 20px solid #eaf0f6;
   border-radius: 50%;
   border-top: 20px solid grey;
   width: 200px;
@@ -9,13 +9,17 @@
 }
 
 @keyframes spinner {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.loader_small{
+.loader_small {
   margin: auto;
-  border: 2px solid #EAF0F6;
+  border: 2px solid #eaf0f6;
   border-radius: 50%;
   border-top: 2px solid grey;
   width: 20px;
