@@ -1,27 +1,16 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: { browser: true, es6: true, jest: true, node: true },
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'prettier',
+    'plugin:prettier/recommended',
   ],
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
-  env: {
-    browser: true,
-    es6: true,
-    jest: true,
-    node: true,
-  },
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', 'prettier', '@typescript-eslint', 'react'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
@@ -42,11 +31,6 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     curly: 2,
-  },
-  settings: {
-    react: {
-      pragma: 'React',
-      version: 'detect',
-    },
+    'prettier/prettier': 'error',
   },
 };
