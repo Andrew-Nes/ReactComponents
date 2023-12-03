@@ -6,10 +6,11 @@ import {
   SubmitErrorHandler,
 } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setFormData } from '../../state/formData/formDataSlice';
 import { yupSchema } from '../../services/yupSchema';
 import * as yup from 'yup';
+import { RootState } from '../../state/store';
 
 type FormData = yup.InferType<typeof yupSchema>;
 
@@ -26,6 +27,8 @@ const FormComponent: React.FC = () => {
   const onError: SubmitErrorHandler<FormData> = (errors) => {
     console.error(errors);
   };
+
+  const countries = useSelector((state: RootState) => state.countries.value);
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -158,9 +161,14 @@ const FormComponent: React.FC = () => {
           render={({ field, fieldState }) => (
             <>
               <select {...field}>
-                {/* Add options dynamically from Redux store */}
-                <option value="country1">Country 1</option>
-                <option value="country2">Country 2</option>
+                <option value="" disabled hidden>
+                  Select a country
+                </option>
+                {countries.map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
               </select>
               <p>{fieldState.error?.message}</p>
             </>
