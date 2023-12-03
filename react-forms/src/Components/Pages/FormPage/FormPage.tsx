@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import FormComponent from '../../Form/Form';
+import FormComponent from '../../FormUncontrolled/FormUncontrolled';
 
 const FormPage: FC = () => {
   return (
