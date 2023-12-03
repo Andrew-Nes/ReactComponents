@@ -67,11 +67,11 @@ const FormComponent: React.FC = () => {
           };
         }
         const timer: ReturnType<typeof setTimeout> = setTimeout(() => {
-          dispatch(setFormUncontrolledData(formData));
+          dispatch(setFormUncontrolledData(data));
           setErrors({});
           clearTimeout(timer);
           redirect(routes.MAIN);
-        }, 5000);
+        }, 2000);
       })
       .catch((validationErrors) => {
         const newErrors: Record<string, string> = {};

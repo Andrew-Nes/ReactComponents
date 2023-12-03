@@ -38,17 +38,21 @@ export const yupUncontrolledSchema = yup.object().shape({
       'isImage',
       'Please upload a valid image (PNG or JPEG)',
       function (value) {
-        if (!value) {
-          return true;
-        }
-
         const validTypes = ['image/png', 'image/jpeg'];
-
+        console.log((value as FileList)[0]?.type);
         return (
           value && validTypes.includes(value && (value as FileList)[0]?.type)
         );
       }
-    ),
+    )
+    .test('isImageSize', 'Image size should not exceed 5MB', function (value) {
+      if (!value) {
+        return true;
+      }
+      const maxSizeInBytes = 1024 * 1024; // 1MB
+
+      return value && (value as FileList)[0]?.size <= maxSizeInBytes;
+    }),
   gender: yup.string().required('Gender is required'),
   country: yup.string().required('Country is required'),
 });

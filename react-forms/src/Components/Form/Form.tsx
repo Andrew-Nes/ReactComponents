@@ -11,10 +11,13 @@ import { setFormData } from '../../state/formData/formDataSlice';
 import { yupSchema } from '../../services/yupSchema';
 import * as yup from 'yup';
 import { RootState } from '../../state/store';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '../../services/routes';
 
 type FormData = yup.InferType<typeof yupSchema>;
 
 const FormComponent: React.FC = () => {
+  const redirect = useNavigate();
   const { handleSubmit, control, formState } = useForm<FormData>({
     resolver: yupResolver(yupSchema),
   });
@@ -23,6 +26,7 @@ const FormComponent: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     dispatch(setFormData(data));
+    redirect(routes.MAIN);
   };
   const onError: SubmitErrorHandler<FormData> = (errors) => {
     console.error(errors);
@@ -139,7 +143,7 @@ const FormComponent: React.FC = () => {
         />
       </div>
 
-      <div>
+      {/* <div>
         <label htmlFor="picture">Upload Picture:</label>
         <Controller
           name="picture"
@@ -151,7 +155,7 @@ const FormComponent: React.FC = () => {
             </>
           )}
         />
-      </div>
+      </div> */}
 
       <div>
         <label htmlFor="country">Country:</label>

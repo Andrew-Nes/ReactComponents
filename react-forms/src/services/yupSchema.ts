@@ -1,7 +1,5 @@
 import * as yup from 'yup';
 
-// const MAX_FILE_SIZE = 1048576;
-
 export const yupSchema = yup.object().shape({
   name: yup
     .string()
@@ -34,7 +32,6 @@ export const yupSchema = yup.object().shape({
     .boolean()
     .required()
     .oneOf([true], 'Accept Terms & Conditions is required'),
-  picture: yup.mixed().required('Please add image'),
   gender: yup.string().required('Gender is required'),
   country: yup.string().required('Country is required'),
 });
