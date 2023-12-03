@@ -1,2 +1,2 @@
 # ReactComponents
-Repository for RSS React course react components task
+Repository for RSS React course 
